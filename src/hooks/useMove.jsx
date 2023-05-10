@@ -12,7 +12,7 @@ export const useMove = (id) => {
 
   useEffect(() => {
     const card = document.getElementById(id);
-    const whiteboard = card.parentElement;
+    const whiteboard = card.closest(".whiteboard");
 
     const onMouseDown = (e) => {
       isClicked.current = true;
@@ -40,5 +40,12 @@ export const useMove = (id) => {
     card.addEventListener("mouseup", onMouseUp);
     whiteboard.addEventListener("mousemove", onMouseMove);
     whiteboard.addEventListener("mouseleave", onMouseUp);
+
+    return () => {
+      card.removeEventListener("mousedown", onMouseDown);
+      card.removeEventListener("mouseup", onMouseUp);
+      whiteboard.removeEventListener("mousemove", onMouseMove);
+      whiteboard.removeEventListener("mouseleave", onMouseUp);
+    };
   }, [id]);
 };
