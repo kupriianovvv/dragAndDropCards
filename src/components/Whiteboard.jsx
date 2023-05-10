@@ -2,7 +2,9 @@ import { useCards } from "../hooks/useCards";
 import { Card } from "./Card";
 
 export const Whiteboard = () => {
-  const [cards, onAddCard] = useCards([{ id: 0, text: "textextext" }]);
+  const [cards, onAddCard, onRemoveCard] = useCards([
+    { id: 0, text: "textextext" },
+  ]);
 
   return (
     <div className="whiteboard">
@@ -11,7 +13,7 @@ export const Whiteboard = () => {
       </section>
       <section>
         {cards.map((card) => (
-          <Card key={card.id} id={card.id}>
+          <Card key={card.id} id={card.id} onRemoveCard={onRemoveCard}>
             {card.text}
           </Card>
         ))}

@@ -9,5 +9,9 @@ export const useCards = (card = []) => {
     setCards((prevCards) => [...prevCards, { id: id++, text: "" }]);
   };
 
-  return [cards, onAddCard];
+  const onRemoveCard = (id) => {
+    setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+  };
+
+  return [cards, onAddCard, onRemoveCard];
 };
