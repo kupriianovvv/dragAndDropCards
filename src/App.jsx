@@ -1,14 +1,11 @@
 import { createRoot } from "react-dom/client";
 import { Card } from "./components/Card";
+import { Whiteboard } from "./components/Whiteboard";
 
 const App = () => {
   return (
     <main>
-      <div className="whiteboard">
-        <Card id={1} />
-        <Card id={2} />
-        <Card id={3} />
-      </div>
+      <Whiteboard />
     </main>
   );
 };
