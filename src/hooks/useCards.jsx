@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+// TODO: replace with uuid
 let id = 1;
 
 export const useCards = (card = []) => {

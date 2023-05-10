@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+//TODO: maybe more declarative?
 export const useMove = (id) => {
   const isClicked = useRef(false);
 
