@@ -7,8 +7,8 @@ export const useMove = (id) => {
   const coords = useRef({
     startX: 0,
     startY: 0,
-    endX: 0,
-    endY: 0,
+    offsetX: 0,
+    offsetY: 0,
   });
 
   useEffect(() => {
@@ -19,19 +19,19 @@ export const useMove = (id) => {
       isClicked.current = true;
       coords.current.startX = e.clientX;
       coords.current.startY = e.clientY;
+      coords.current.offsetX = card.offsetLeft;
+      coords.current.offsetY = card.offsetTop;
     };
 
     const onMouseUp = (e) => {
       isClicked.current = false;
-      coords.current.endX = card.offsetLeft;
-      coords.current.endY = card.offsetTop;
     };
 
     const onMouseMove = (e) => {
       if (!isClicked.current) return;
 
-      const nextX = e.clientX - coords.current.startX + coords.current.endX;
-      const nextY = e.clientY - coords.current.startY + coords.current.endY;
+      const nextX = e.clientX - coords.current.startX + coords.current.offsetX;
+      const nextY = e.clientY - coords.current.startY + coords.current.offsetY;
 
       card.style.top = `${nextY}px`;
       card.style.left = `${nextX}px`;
