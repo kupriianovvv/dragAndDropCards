@@ -1,7 +1,8 @@
 import { createRoot } from "react-dom/client";
+import { Whiteboard } from "./components/Whiteboard";
 
 const App = () => {
-  return <div>Start of something great</div>;
+  return <Whiteboard />;
 };
 
 const container = document.getElementById("root");
