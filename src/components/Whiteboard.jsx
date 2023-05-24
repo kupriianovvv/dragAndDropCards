@@ -9,6 +9,7 @@ export const Whiteboard = () => {
         {cards.map((card) => (
           <Card
             key={card.id}
+            id={card.id}
             onRemoveCard={() => onRemoveCard(card.id)}
             onChangeCoords={onChangeCoords}
             coords={card.coords}
