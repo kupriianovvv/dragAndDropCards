@@ -6,15 +6,14 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
   const onMouseDown = (e) => {
     const card = e.target;
     const rect = card.getBoundingClientRect();
-    const whiteboard = card.closest(".whiteboard");
     const shift = {
       x: e.clientX - rect.x,
       y: e.clientY - rect.y,
     };
     document.onmousemove = (e) => {
       onChangeCoords(+card.id, {
-        x: e.clientX - shift.x - whiteboard.offsetLeft,
-        y: e.clientY - shift.y - whiteboard.offsetTop,
+        x: e.clientX - shift.x,
+        y: e.clientY - shift.y,
       });
     };
     document.onmouseup = () => {
@@ -52,12 +51,12 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
     <article
       id={id}
       className="card"
-      style={{ left: coords.x, top: coords.y }}
+      style={{ transform: `translate(${coords.x}px, ${coords.y}px)` }}
       /* ref={cardRef} */
       onMouseDown={onMouseDown}
     >
       <section className="card--remove-button" onClick={onRemoveCard}>
-        [&times;]
+        <button>[&times;]</button>
       </section>
       <section className="card--body">text</section>
     </article>
