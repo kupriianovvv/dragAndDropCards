@@ -6,14 +6,15 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
   const onMouseDown = (e) => {
     const card = e.target;
     const rect = card.getBoundingClientRect();
+    const whiteboard = card.closest(".whiteboard");
     const shift = {
       x: e.clientX - rect.x,
       y: e.clientY - rect.y,
     };
     document.onmousemove = (e) => {
       onChangeCoords(+card.id, {
-        x: e.clientX - shift.x,
-        y: e.clientY - shift.y,
+        x: e.clientX - shift.x - whiteboard.offsetLeft,
+        y: e.clientY - shift.y - whiteboard.offsetTop,
       });
     };
     document.onmouseup = () => {
