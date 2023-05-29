@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
+export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
   /*   const cardRef = useRef(); */
 
   const onMouseDown = (e) => {
@@ -12,8 +12,8 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
     };
     document.onmousemove = (e) => {
       onChangeCoords(+card.id, {
-        x: (e.clientX - shift.x) / 2 - 50,
-        y: (e.clientY - shift.y) / 2 - 150,
+        x: (e.clientX - shift.x) / zoom.scale - zoom.x / zoom.scale,
+        y: (e.clientY - shift.y) / zoom.scale - zoom.y / zoom.scale,
       });
 
       // делим на скейл вычитаем translate деленный на скейл

@@ -56,6 +56,7 @@ export const Whiteboard = () => {
             onRemoveCard={() => onRemoveCard(card.id)}
             onChangeCoords={onChangeCoords}
             coords={card.coords}
+            zoom={zoom}
           />
         ))}
       </section>
