@@ -5,7 +5,7 @@ import { Card } from "./Card";
 export const Whiteboard = () => {
   const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
 
-  const [zoom, setZoom] = useState({ x: 100, y: 300, scale: 2 });
+  const [zoom, setZoom] = useState({ x: 0, y: 0, scale: 1 });
 
   useEffect(() => {
     const onWheel = (e) => {

@@ -18,7 +18,6 @@ body {
 .whiteboard {
   height: 100vh;
   width: 100vw;
-  transition: transform 0.3s;
   transform-origin: 0 0;
   position: relative;
 }
