@@ -12,9 +12,11 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard }) => {
     };
     document.onmousemove = (e) => {
       onChangeCoords(+card.id, {
-        x: e.clientX - shift.x,
-        y: e.clientY - shift.y,
+        x: (e.clientX - shift.x) / 2 - 50,
+        y: (e.clientY - shift.y) / 2 - 150,
       });
+
+      // делим на скейл вычитаем translate деленный на скейл
     };
     document.onmouseup = () => {
       document.onmousemove = null;

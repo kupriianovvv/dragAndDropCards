@@ -16,8 +16,8 @@ body {
 }
 
 .whiteboard {
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
   transition: transform 0.3s;
   transform-origin: 0 0;
   position: relative;
@@ -28,6 +28,5 @@ body {
   height: 270px;
   border: 2px solid black;
   background-color: white;
-
   position: absolute;
 }
