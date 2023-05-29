@@ -5,26 +5,32 @@ import { Card } from "./Card";
 export const Whiteboard = () => {
   const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
 
-  const [coords, setCoords] = useState({ x: 100, y: 300 });
-  const [scale, setScale] = useState(2);
+  const [zoom, setZoom] = useState({ x: 100, y: 300, scale: 2 });
 
   useEffect(() => {
     const onWheel = (e) => {
       e.preventDefault();
 
-      const normedCoords = {
-        x: (e.clientX - coords.x) / scale,
-        y: (e.clientY - coords.y) / scale,
+      const getNewZoomFromPrev = (prevZoom) => {
+        const normedCoords = {
+          x: (e.clientX - prevZoom.x) / prevZoom.scale,
+          y: (e.clientY - prevZoom.y) / prevZoom.scale,
+        };
+
+        const newScale =
+          e.wheelDelta > 0 ? prevZoom.scale * 1.1 : prevZoom.scale / 1.1;
+        const newCoords = {
+          x: e.clientX - normedCoords.x * newScale,
+          y: e.clientY - normedCoords.y * newScale,
+        };
+        return {
+          x: newCoords.x,
+          y: newCoords.y,
+          scale: newScale,
+        };
       };
 
-      const newScale = e.wheelDelta > 0 ? scale * 1.1 : scale / 1.1;
-      const newCoords = {
-        x: e.clientX - normedCoords.x * newScale,
-        y: e.clientY - normedCoords.y * newScale,
-      };
-
-      setScale(newScale);
-      setCoords(newCoords);
+      setZoom(getNewZoomFromPrev);
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
@@ -32,14 +38,14 @@ export const Whiteboard = () => {
     return () => {
       window.removeEventListener("wheel", onWheel);
     };
-  }, [coords.x, coords.y, scale]);
+  }, []);
 
   //useZoom();
   return (
     <main
       className="whiteboard"
       style={{
-        transform: `translate(${coords.x}px,${coords.y}px) scale(${scale},${scale})`,
+        transform: `translate(${zoom.x}px,${zoom.y}px) scale(${zoom.scale},${zoom.scale})`,
       }}
     >
       <section>
