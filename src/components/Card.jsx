@@ -1,61 +1,52 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
-  /*   const cardRef = useRef(); */
+  const cardRef = useRef();
+  const latestZoom = useRef(zoom);
 
-  const onMouseDown = (e) => {
-    const card = e.target;
-    const rect = card.getBoundingClientRect();
-    const shift = {
-      x: e.clientX - rect.x,
-      y: e.clientY - rect.y,
-    };
-    document.onmousemove = (e) => {
-      onChangeCoords(+card.id, {
-        x: (e.clientX - shift.x) / zoom.scale - zoom.x / zoom.scale,
-        y: (e.clientY - shift.y) / zoom.scale - zoom.y / zoom.scale,
-      });
+  useLayoutEffect(() => {
+    latestZoom.current = zoom;
+  }, [zoom]);
 
-      // делим на скейл вычитаем translate деленный на скейл
-    };
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-  };
-  /*   useEffect(() => {
-    const el = cardRef.current;
-    if (!el) {
-      return;
-    }
+  useEffect(() => {
+    const card = cardRef.current;
 
-    el.onmousedown = (e) => {
-      const rect = el.getBoundingClientRect();
+    const onMouseDown = (e) => {
+      if (!card) {
+        return;
+      }
+      const rect = card.getBoundingClientRect();
       const shift = {
         x: e.clientX - rect.x,
         y: e.clientY - rect.y,
       };
-
-      document.onmousemove = (e) => {
-        onChangeCoords(+el.id, {
-          x: e.clientX - shift.x,
-          y: e.clientY - shift.y,
+      const onMouseMove = (e) => {
+        onChangeCoords(+card.id, {
+          x:
+            (e.clientX - shift.x) / latestZoom.current.scale -
+            latestZoom.current.x / latestZoom.current.scale,
+          y:
+            (e.clientY - shift.y) / latestZoom.current.scale -
+            latestZoom.current.y / latestZoom.current.scale,
         });
       };
-      document.onmouseup = (e) => {
-        document.onmousemove = null;
-        document.onmouseup = null;
+      const onMouseUp = (e) => {
+        document.removeEventListener("mousemove", onMouseMove);
       };
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp, { once: true });
     };
-  }, []); */
+
+    card.addEventListener("mousedown", onMouseDown);
+  }, []);
 
   return (
     <article
       id={id}
       className="card"
       style={{ transform: `translate(${coords.x}px, ${coords.y}px)` }}
-      /* ref={cardRef} */
-      onMouseDown={onMouseDown}
+      ref={cardRef}
     >
       <section className="card--remove-button" onClick={onRemoveCard}>
         <button>[&times;]</button>
