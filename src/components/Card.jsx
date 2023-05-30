@@ -1,12 +1,21 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
+  const [tempCoords, setTempCoords] = useState(null);
+
   const cardRef = useRef();
   const latestZoom = useRef(zoom);
+  const latestTempCoords = useRef(tempCoords);
 
   useLayoutEffect(() => {
     latestZoom.current = zoom;
   }, [zoom]);
+
+  useLayoutEffect(() => {
+    latestTempCoords.current = tempCoords;
+  }, [tempCoords]);
+
+  const actualCoords = tempCoords ?? coords;
 
   useEffect(() => {
     const card = cardRef.current;
@@ -21,7 +30,7 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
         y: e.clientY - rect.y,
       };
       const onMouseMove = (e) => {
-        onChangeCoords(+card.id, {
+        setTempCoords({
           x:
             (e.clientX - shift.x) / latestZoom.current.scale -
             latestZoom.current.x / latestZoom.current.scale,
@@ -32,6 +41,7 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
       };
       const onMouseUp = (e) => {
         document.removeEventListener("mousemove", onMouseMove);
+        onChangeCoords(+card.id, latestTempCoords.current);
       };
 
       document.addEventListener("mousemove", onMouseMove);
@@ -45,7 +55,9 @@ export const Card = ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
     <article
       id={id}
       className="card"
-      style={{ transform: `translate(${coords.x}px, ${coords.y}px)` }}
+      style={{
+        transform: `translate(${actualCoords.x}px, ${actualCoords.y}px)`,
+      }}
       ref={cardRef}
     >
       <section className="card--remove-button" onClick={onRemoveCard}>
