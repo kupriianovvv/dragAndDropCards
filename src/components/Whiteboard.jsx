@@ -9,6 +9,8 @@ export const Whiteboard = () => {
 
   useEffect(() => {
     const onWheel = (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+
       e.preventDefault();
 
       const getNewZoomFromPrev = (prevZoom) => {
