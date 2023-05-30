@@ -61,8 +61,8 @@ export const Card = memo(
         }}
         ref={cardRef}
       >
-        <section className="card--remove-button" onClick={onRemoveCard}>
-          <button>[&times;]</button>
+        <section className="card--remove-button">
+          <button onClick={() => onRemoveCard(id)}>[&times;]</button>
         </section>
         <section className="card--body">text</section>
       </article>

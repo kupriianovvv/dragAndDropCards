@@ -1,15 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useWhiteboard } from "../hooks/UseWhiteboard";
 import { Card } from "./Card";
 
 export const Whiteboard = () => {
-  const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
+  const {
+    cards,
+    onAddCard,
+    onRemoveCard: _onRemoveCard,
+    onChangeCoords,
+  } = useWhiteboard();
 
   const [zoom, setZoom] = useState({ x: 0, y: 0, scale: 1 });
 
+  const onRemoveCard = useCallback(_onRemoveCard, []);
+
   useEffect(() => {
     const onWheel = (e) => {
-      if (!e.ctrlKey && !e.metaKey) return;
+      if (!e.ctrlKey && !e.metaKey && !e.shiftKey) return;
 
       e.preventDefault();
 
@@ -27,8 +34,8 @@ export const Whiteboard = () => {
         };
         return {
           x: newCoords.x,
-          y: newCoords.y,
-          scale: newScale,
+          y: e.shiftKey ? prevZoom.y : newCoords.y,
+          scale: e.shiftKey ? prevZoom.scale : newScale,
         };
       };
 
@@ -55,7 +62,7 @@ export const Whiteboard = () => {
           <Card
             key={card.id}
             id={card.id}
-            onRemoveCard={() => onRemoveCard(card.id)}
+            onRemoveCard={onRemoveCard}
             onChangeCoords={onChangeCoords}
             coords={card.coords}
             zoom={zoom}

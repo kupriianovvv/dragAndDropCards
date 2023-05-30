@@ -3,7 +3,7 @@ import { getId } from "../utils/getId";
 
 export const useWhiteboard = (
   initialCards = [
-    { id: -1, coords: { x: 0, y: 0 } },
+    { id: -1, coords: { x: 100, y: 0 } },
     { id: 0, coords: { x: 200, y: 300 } },
   ]
 ) => {
@@ -12,7 +12,7 @@ export const useWhiteboard = (
   const onAddCard = useCallback(() => {
     setCards((prevCards) => [
       ...prevCards,
-      { id: getId(), coords: { x: 0, y: 0 } },
+      { id: getId(), coords: { x: 500, y: 0 } },
     ]);
   }, []);
 
