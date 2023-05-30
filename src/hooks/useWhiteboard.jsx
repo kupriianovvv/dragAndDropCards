@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { getId } from "../utils/getId";
 
 export const useWhiteboard = (
@@ -9,18 +9,18 @@ export const useWhiteboard = (
 ) => {
   const [cards, setCards] = useState(initialCards);
 
-  const onAddCard = () => {
+  const onAddCard = useCallback(() => {
     setCards((prevCards) => [
       ...prevCards,
       { id: getId(), coords: { x: 0, y: 0 } },
     ]);
-  };
+  }, []);
 
-  const onRemoveCard = (id) => {
+  const onRemoveCard = useCallback((id) => {
     setCards((prevCards) => prevCards.filter((card) => card.id !== id));
-  };
+  }, []);
 
-  const onChangeCoords = (id, coords) => {
+  const onChangeCoords = useCallback((id, coords) => {
     setCards((prevCards) => {
       return prevCards.map((card) => {
         if (card.id !== id) return card;
@@ -34,7 +34,7 @@ export const useWhiteboard = (
         };
       });
     });
-  };
+  }, []);
 
   return { cards, onAddCard, onRemoveCard, onChangeCoords };
 };
