@@ -2,7 +2,7 @@ import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export const Card = memo(
   ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
-    const [tempCoords, setTempCoords] = useState(null);
+    const [tempCoords, setTempCoords] = useState(coords);
 
     const cardRef = useRef();
     const latestZoom = useRef(zoom);
