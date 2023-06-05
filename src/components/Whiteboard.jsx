@@ -51,29 +51,31 @@ export const Whiteboard = () => {
 
   //useZoom();
   return (
-    <main
-      className="whiteboard"
-      style={{
-        transform: `translate(${zoom.x}px,${zoom.y}px) scale(${zoom.scale},${zoom.scale})`,
-      }}
-    >
-      <section>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            onRemoveCard={onRemoveCard}
-            onChangeCoords={onChangeCoords}
-            coords={card.coords}
-            zoom={zoom}
-          />
-        ))}
-      </section>
+    <>
       <section>
         <button className="add-button" onClick={onAddCard}>
           Add card
         </button>
       </section>
-    </main>
+      <main
+        className="whiteboard"
+        style={{
+          transform: `translate(${zoom.x}px,${zoom.y}px) scale(${zoom.scale},${zoom.scale})`,
+        }}
+      >
+        <section>
+          {cards.map((card) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              onRemoveCard={onRemoveCard}
+              onChangeCoords={onChangeCoords}
+              coords={card.coords}
+              zoom={zoom}
+            />
+          ))}
+        </section>
+      </main>
+    </>
   );
 };

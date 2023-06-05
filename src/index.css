@@ -29,3 +29,7 @@ body {
   background-color: white;
   position: absolute;
 }
+
+.add-button {
+  position: fixed;
+}
