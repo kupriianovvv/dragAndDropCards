@@ -59,4 +59,15 @@ export const useCanvasPosition = (setCanvasPosition) => {
     };
     window.addEventListener("wheel", onWheel, { passive: false });
   }, []);
+
+  const moveCanvasPositionToZero = () => {
+    console.log("hop");
+    setCanvasPosition((prevCanvasPosition) => ({
+      x: 0,
+      y: 0,
+      scale: prevCanvasPosition.scale,
+    }));
+  };
+
+  return { moveCanvasPositionToZero };
 };

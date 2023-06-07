@@ -14,13 +14,19 @@ export const Whiteboard = () => {
   const [zoom, setZoom] = useState({ x: 0, y: 0, scale: 1 });
 
   const onRemoveCard = useCallback(_onRemoveCard, []);
-  useCanvasPosition(setZoom);
+  const { moveCanvasPositionToZero } = useCanvasPosition(setZoom);
 
   return (
     <>
       <section>
         <button className="add-button" onClick={onAddCard}>
           Add card
+        </button>
+        <button
+          className="return-canvas-position-button"
+          onClick={moveCanvasPositionToZero}
+        >
+          scroll back
         </button>
       </section>
       <main

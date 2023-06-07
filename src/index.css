@@ -33,3 +33,8 @@ body {
 .add-button {
   position: fixed;
 }
+
+.return-canvas-position-button {
+  position: fixed;
+  left: 100px;
+}
