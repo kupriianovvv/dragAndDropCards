@@ -49,7 +49,7 @@ export const useCanvasPosition = (initialCanvasPosition) => {
 
     const onWheel = (e) => {
       e.preventDefault();
-      if (e.ctrlKey) {
+      if (e.ctrlKey || e.metaKey) {
         requestAnimationFrame(() =>
           setCanvasPosition(
             getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(e)
