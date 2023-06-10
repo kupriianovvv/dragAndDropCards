@@ -50,13 +50,19 @@ export const useCanvasPosition = (initialCanvasPosition) => {
     const onWheel = (e) => {
       e.preventDefault();
       if (e.ctrlKey) {
-        setCanvasPosition(
-          getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(e)
+        requestAnimationFrame(() =>
+          setCanvasPosition(
+            getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(e)
+          )
         );
       } else if (e.shiftKey) {
-        setCanvasPosition(getNewCanvasPositionFromPrevWhenScrollAndShift(e));
+        requestAnimationFrame(() =>
+          setCanvasPosition(getNewCanvasPositionFromPrevWhenScrollAndShift(e))
+        );
       } else {
-        setCanvasPosition(getNewCanvasPositionFromPrevWhenScroll(e));
+        requestAnimationFrame(() =>
+          setCanvasPosition(getNewCanvasPositionFromPrevWhenScroll(e))
+        );
       }
     };
     window.addEventListener("wheel", onWheel, { passive: false });
