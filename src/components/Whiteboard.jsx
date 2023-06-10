@@ -11,10 +11,13 @@ export const Whiteboard = () => {
     onChangeCoords,
   } = useWhiteboard();
 
-  const [zoom, setZoom] = useState({ x: 0, y: 0, scale: 1 });
-
   const onRemoveCard = useCallback(_onRemoveCard, []);
-  const { moveCanvasPositionToZero } = useCanvasPosition(setZoom);
+  const { canvasPosition, setCanvasPosition, moveCanvasPositionToZero } =
+    useCanvasPosition({
+      x: 0,
+      y: 0,
+      scale: 1,
+    });
 
   return (
     <>
@@ -32,7 +35,7 @@ export const Whiteboard = () => {
       <main
         className="whiteboard"
         style={{
-          transform: `translate(${zoom.x}px,${zoom.y}px) scale(${zoom.scale},${zoom.scale})`,
+          transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale},${canvasPosition.scale})`,
         }}
       >
         <section>
@@ -43,7 +46,7 @@ export const Whiteboard = () => {
               onRemoveCard={onRemoveCard}
               onChangeCoords={onChangeCoords}
               coords={card.coords}
-              zoom={zoom}
+              canvasPosition={canvasPosition}
             />
           ))}
         </section>

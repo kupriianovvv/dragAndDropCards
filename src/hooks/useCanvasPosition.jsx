@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const useCanvasPosition = (setCanvasPosition) => {
+export const useCanvasPosition = (initialCanvasPosition) => {
+  const [canvasPosition, setCanvasPosition] = useState(initialCanvasPosition);
+
   useEffect(() => {
     const getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand = (e) => {
       return (prevCanvasPosition) => {
@@ -61,7 +63,6 @@ export const useCanvasPosition = (setCanvasPosition) => {
   }, []);
 
   const moveCanvasPositionToZero = () => {
-    console.log("hop");
     setCanvasPosition((prevCanvasPosition) => ({
       x: 0,
       y: 0,
@@ -69,5 +70,5 @@ export const useCanvasPosition = (setCanvasPosition) => {
     }));
   };
 
-  return { moveCanvasPositionToZero };
+  return { moveCanvasPositionToZero, canvasPosition, setCanvasPosition };
 };

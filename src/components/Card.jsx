@@ -1,20 +1,14 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLatest } from "../hooks/useLatext";
 
 export const Card = memo(
-  ({ id, coords, onChangeCoords, onRemoveCard, zoom }) => {
+  ({ id, coords, onChangeCoords, onRemoveCard, canvasPosition }) => {
     const [tempCoords, setTempCoords] = useState(coords);
 
     const cardRef = useRef();
-    const latestZoom = useRef(zoom);
-    const latestTempCoords = useRef(tempCoords);
 
-    useLayoutEffect(() => {
-      latestZoom.current = zoom;
-    }, [zoom]);
-
-    useLayoutEffect(() => {
-      latestTempCoords.current = tempCoords;
-    }, [tempCoords]);
+    const latestcanvasPosition = useLatest(canvasPosition);
+    const latestTempCoords = useLatest(tempCoords);
 
     const actualCoords = tempCoords ?? coords;
 
@@ -33,11 +27,13 @@ export const Card = memo(
         const onMouseMove = (e) => {
           setTempCoords({
             x:
-              (e.clientX - shift.x) / latestZoom.current.scale -
-              latestZoom.current.x / latestZoom.current.scale,
+              (e.clientX - shift.x) / latestcanvasPosition.current.scale -
+              latestcanvasPosition.current.x /
+                latestcanvasPosition.current.scale,
             y:
-              (e.clientY - shift.y) / latestZoom.current.scale -
-              latestZoom.current.y / latestZoom.current.scale,
+              (e.clientY - shift.y) / latestcanvasPosition.current.scale -
+              latestcanvasPosition.current.y /
+                latestcanvasPosition.current.scale,
           });
         };
         const onMouseUp = (e) => {
