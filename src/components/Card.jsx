@@ -49,6 +49,10 @@ export const Card = memo(
       };
 
       card.addEventListener("mousedown", onMouseDown);
+
+      return () => {
+        document.removeEventListener("mousedown", onMouseDown);
+      };
     }, []);
 
     return (
