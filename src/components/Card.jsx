@@ -16,6 +16,7 @@ export const Card = memo(
       const card = cardRef.current;
 
       const onMouseDown = (e) => {
+        if (e.button !== 0) return;
         if (!card) {
           return;
         }
@@ -25,6 +26,7 @@ export const Card = memo(
           y: e.clientY - rect.y,
         };
         const onMouseMove = (e) => {
+          if (e.button !== 0) return;
           setTempCoords({
             x:
               (e.clientX - shift.x) / latestcanvasPosition.current.scale -
@@ -37,6 +39,7 @@ export const Card = memo(
           });
         };
         const onMouseUp = (e) => {
+          if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           onChangeCoords(+card.id, latestTempCoords.current);
         };
