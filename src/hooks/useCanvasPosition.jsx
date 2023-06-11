@@ -103,6 +103,10 @@ export const useCanvasPosition = (initialCanvasPosition) => {
       );
     };
     window.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+    };
   }, []);
 
   const moveCanvasPositionToZero = () => {
