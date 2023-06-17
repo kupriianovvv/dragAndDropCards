@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useLatest } from "../hooks/useLatext";
 
 export const Card = memo(
@@ -42,6 +42,7 @@ export const Card = memo(
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           onChangeCoords(+card.id, latestTempCoords.current);
+          setTempCoords(null);
         };
 
         document.addEventListener("mousemove", onMouseMove);
