@@ -41,7 +41,9 @@ export const Card = memo(
         const onMouseUp = (e) => {
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
-          onChangeCoords(+card.id, latestTempCoords.current);
+          if (latestTempCoords.current !== null) {
+            onChangeCoords(+card.id, latestTempCoords.current)
+          }
           setTempCoords(null);
         };
 
