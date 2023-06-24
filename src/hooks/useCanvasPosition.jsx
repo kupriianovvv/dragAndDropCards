@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { rafThrottle } from "../utils/rafThrottle";
 
 export const useCanvasPosition = (initialCanvasPosition) => {
   const [canvasPosition, setCanvasPosition] = useState(initialCanvasPosition);

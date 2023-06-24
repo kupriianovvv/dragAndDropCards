@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCanvasPosition } from "../hooks/useCanvasPosition";
 import { useWhiteboard } from "../hooks/UseWhiteboard";
 import { Card } from "./Card";
+import image from "../assets/grid.svg";
 
 export const Whiteboard = () => {
   const {
@@ -36,6 +37,7 @@ export const Whiteboard = () => {
         className="whiteboard"
         style={{
           transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale},${canvasPosition.scale})`,
+          backgroundImage: `url(${image})`,
         }}
       >
         <section>
