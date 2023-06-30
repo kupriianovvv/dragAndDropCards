@@ -20,6 +20,8 @@ export const Whiteboard = () => {
       scale: 1,
     });
 
+  const inset =  `-${((100 / canvasPosition.scale - 100)) / 2}%`
+
   return (
     <>
       <section>
@@ -33,26 +35,39 @@ export const Whiteboard = () => {
           scroll back
         </button>
       </section>
-      <main
-        className="whiteboard"
-        style={{
-          transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale},${canvasPosition.scale})`,
-          backgroundImage: `url(${image})`,
-        }}
-      >
-        <section>
-          {cards.map((card) => (
-            <Card
-              key={card.id}
-              id={card.id}
-              onRemoveCard={onRemoveCard}
-              onChangeCoords={onChangeCoords}
-              coords={card.coords}
-              canvasPosition={canvasPosition}
-            />
-          ))}
-        </section>
-      </main>
+      <div style={{position: "relative"}}>
+        <div
+          style={{
+            transform: `scale(${canvasPosition.scale})`,
+            //backgroundPosition: `-${canvasPosition.x}px -${canvasPosition.y}px`,
+            backgroundImage: `url(${image})`,
+            position: "fixed",
+            inset: inset,
+            zIndex: -1
+          }}
+        ></div>
+          
+          <main
+            className="whiteboard"
+            style={{
+              transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale})`,
+            }}
+          >
+            <section>
+              {cards.map((card) => (
+                <Card
+                  key={card.id}
+                  id={card.id}
+                  onRemoveCard={onRemoveCard}
+                  onChangeCoords={onChangeCoords}
+                  coords={card.coords}
+                  canvasPosition={canvasPosition}
+                />
+              ))}
+            </section>
+          </main>
+        
+      </div>
     </>
   );
 };
