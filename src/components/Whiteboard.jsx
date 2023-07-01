@@ -24,7 +24,7 @@ export const Whiteboard = () => {
 
   return (
     <>
-      <section>
+      <section style={{position: "fixed", zIndex: 1}}>
         <button className="add-button" onClick={onAddCard}>
           Add card
         </button>
