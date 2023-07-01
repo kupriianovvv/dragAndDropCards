@@ -1,26 +1,28 @@
-export function throttle(func, ms) {
-  let isThrottled = false,
-    savedArgs,
-    savedThis;
+export const rafThrottle = fn => {
+  let rafId = null;
 
-  function wrapper() {
-    if (isThrottled) {
-      savedArgs = arguments;
-      savedThis = this;
+  const throttledFn = (...args) => {
+    if (typeof rafId === 'number') {
       return;
     }
 
-    func.apply(this, arguments);
-    isThrottled = true;
+    rafId = requestAnimationFrame(() => {
+      fn.apply(null, args);
+      rafId = null;
+    });
+  };
 
-    setTimeout(function () {
-      isThrottled = false;
-      if (savedArgs) {
-        wrapper.apply(savedThis, savedArgs);
-        savedArgs = savedThis = null;
-      }
-    }, ms);
-  }
+  throttledFn.cancel = () => {
+    if (typeof rafId !== 'number') {
+      return;
+    }
 
-  return wrapper;
-}
+    cancelAnimationFrame(rafId);
+  };
+
+  return throttledFn;
+};
+
+/*вроде кансел не нужен, ты один раз создаешь троттлинговую функцию
+она ничего не будет делать, если раф айди не налл,
+а наллом он становится когда коллбек внутри рафа срабатывает*/

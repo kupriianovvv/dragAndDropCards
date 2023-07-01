@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { rafThrottle } from "../utils/throttle";
 
 export const useCanvasPosition = (initialCanvasPosition) => {
   const [canvasPosition, setCanvasPosition] = useState(initialCanvasPosition);
@@ -50,28 +51,22 @@ export const useCanvasPosition = (initialCanvasPosition) => {
       if (e.shiftKey) return getNewCanvasPositionFromPrevWhenScrollAndShift;
       return getNewCanvasPositionFromPrevWhenScroll;
     };
-    let rafId = null;
-    let latestArg = null;
+
+    const updateState = rafThrottle((latestArg) => {
+      const getNewCanvasPositionFromPrev =
+        createGetNewCanvasPositionFromPrev(latestArg);
+      setCanvasPosition(getNewCanvasPositionFromPrev);
+    });
 
     const onWheel = (e) => {
       e.preventDefault();
-      latestArg = e;
-
-      if (rafId !== null) {
-        return;
-      }
-
-      rafId = requestAnimationFrame(() => {
-        const getNewCanvasPositionFromPrev =
-          createGetNewCanvasPositionFromPrev(latestArg);
-        setCanvasPosition(getNewCanvasPositionFromPrev);
-        rafId = null;
-      });
+      updateState(e);
     };
     window.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
       window.removeEventListener("wheel", onWheel);
+      updateState.cancel();
     };
   }, []);
 
