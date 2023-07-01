@@ -4,6 +4,7 @@ import { useLatest } from "../hooks/useLatext";
 export const Card = memo(
   ({ id, coords, onChangeCoords, onRemoveCard, canvasPosition }) => {
     const [tempCoords, setTempCoords] = useState(coords);
+    const [content, setContent] = useState(`card#${id}`);
 
     const cardRef = useRef();
 
@@ -42,7 +43,7 @@ export const Card = memo(
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           if (latestTempCoords.current !== null) {
-            onChangeCoords(+card.id, latestTempCoords.current)
+            onChangeCoords(+card.id, latestTempCoords.current);
           }
           setTempCoords(null);
         };
@@ -70,7 +71,23 @@ export const Card = memo(
         <section className="card--remove-button">
           <button onClick={() => onRemoveCard(id)}>[&times;]</button>
         </section>
-        <section className="card--body">text</section>
+        <section
+          className="card--body"
+          style={{ boxSizing: "border-box", height: "100%" }}
+        >
+          <textarea
+            style={{
+              width: "80%",
+              height: "80%",
+              border: "none",
+              display: "block",
+              margin: "10px auto",
+              resize: "none",
+            }}
+          >
+            {content}
+          </textarea>
+        </section>
       </article>
     );
   }
