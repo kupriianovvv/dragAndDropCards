@@ -52,7 +52,7 @@ export const useCanvasPosition = (initialCanvasPosition) => {
       return getNewCanvasPositionFromPrevWhenScroll;
     };
 
-    const updateState = rafThrottle((latestArg) => {
+    const updateCanvasPosition = rafThrottle((latestArg) => {
       const getNewCanvasPositionFromPrev =
         createGetNewCanvasPositionFromPrev(latestArg);
       setCanvasPosition(getNewCanvasPositionFromPrev);
@@ -60,13 +60,13 @@ export const useCanvasPosition = (initialCanvasPosition) => {
 
     const onWheel = (e) => {
       e.preventDefault();
-      updateState(e);
+      updateCanvasPosition(e);
     };
     window.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
       window.removeEventListener("wheel", onWheel);
-      updateState.cancel();
+      updateCanvasPosition.cancel();
     };
   }, []);
 
