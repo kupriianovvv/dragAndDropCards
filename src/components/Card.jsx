@@ -43,7 +43,7 @@ export const Card = memo(
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           if (latestTempCoords.current !== null) {
-            onChangeCoords(+card.id, latestTempCoords.current);
+            onChangeCoords(id, latestTempCoords.current);
           }
           setTempCoords(null);
         };
@@ -57,7 +57,7 @@ export const Card = memo(
       return () => {
         document.removeEventListener("mousedown", onMouseDown);
       };
-    }, []);
+    }, [id]);
 
     return (
       <article
