@@ -16,9 +16,9 @@ export const useWhiteboard = (
     ]);
   }, []);
 
-  const onRemoveCard = (id) => {
+  const onRemoveCard = useCallback((id) => {
     setCards((prevCards) => prevCards.filter((card) => card.id !== id));
-  };
+  }, []);
 
   const onChangeCoords = useCallback((id, coords) => {
     setCards((prevCards) => {

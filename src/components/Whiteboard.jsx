@@ -5,14 +5,8 @@ import { Card } from "./Card";
 import image from "../assets/grid.svg";
 
 export const Whiteboard = () => {
-  const {
-    cards,
-    onAddCard,
-    onRemoveCard: _onRemoveCard,
-    onChangeCoords,
-  } = useWhiteboard();
+  const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
 
-  const onRemoveCard = useCallback(_onRemoveCard, []);
   const { canvasPosition, setCanvasPosition, moveCanvasPositionToZero } =
     useCanvasPosition({
       x: 0,
@@ -20,11 +14,11 @@ export const Whiteboard = () => {
       scale: 1,
     });
 
-  const inset =  `-${((100 / canvasPosition.scale - 100)) / 2}%`
+  const inset = `-${(100 / canvasPosition.scale - 100) / 2}%`;
 
   return (
     <>
-      <section style={{position: "fixed", zIndex: 1}}>
+      <section style={{ position: "fixed", zIndex: 1 }}>
         <button className="add-button" onClick={onAddCard}>
           Add card
         </button>
@@ -35,7 +29,7 @@ export const Whiteboard = () => {
           scroll back
         </button>
       </section>
-      <div style={{position: "relative"}}>
+      <div style={{ position: "relative" }}>
         <div
           style={{
             transform: `scale(${canvasPosition.scale})`,
@@ -43,30 +37,29 @@ export const Whiteboard = () => {
             backgroundImage: `url(${image})`,
             position: "fixed",
             inset: inset,
-            zIndex: -1
+            zIndex: -1,
           }}
         ></div>
-          
-          <main
-            className="whiteboard"
-            style={{
-              transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale})`,
-            }}
-          >
-            <section>
-              {cards.map((card) => (
-                <Card
-                  key={card.id}
-                  id={card.id}
-                  onRemoveCard={onRemoveCard}
-                  onChangeCoords={onChangeCoords}
-                  coords={card.coords}
-                  canvasPosition={canvasPosition}
-                />
-              ))}
-            </section>
-          </main>
-        
+
+        <main
+          className="whiteboard"
+          style={{
+            transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale})`,
+          }}
+        >
+          <section>
+            {cards.map((card) => (
+              <Card
+                key={card.id}
+                id={card.id}
+                onRemoveCard={onRemoveCard}
+                onChangeCoords={onChangeCoords}
+                coords={card.coords}
+                canvasPosition={canvasPosition}
+              />
+            ))}
+          </section>
+        </main>
       </div>
     </>
   );
