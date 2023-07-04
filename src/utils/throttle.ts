@@ -1,8 +1,8 @@
-export const rafThrottle = fn => {
-  let rafId = null;
+export const rafThrottle = (fn: (...arg: any[]) => any) => {
+  let rafId: number | null = null;
 
-  const throttledFn = (...args) => {
-    if (typeof rafId === 'number') {
+  const throttledFn = (...args: any[]) => {
+    if (typeof rafId === "number") {
       return;
     }
 
@@ -13,7 +13,7 @@ export const rafThrottle = fn => {
   };
 
   throttledFn.cancel = () => {
-    if (typeof rafId !== 'number') {
+    if (typeof rafId !== "number") {
       return;
     }
 
@@ -22,7 +22,3 @@ export const rafThrottle = fn => {
 
   return throttledFn;
 };
-
-/*вроде кансел не нужен, ты один раз создаешь троттлинговую функцию
-она ничего не будет делать, если раф айди не налл,
-а наллом он становится когда коллбек внутри рафа срабатывает*/

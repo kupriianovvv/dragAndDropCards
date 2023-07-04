@@ -16,25 +16,28 @@ export const useWhiteboard = (
     ]);
   }, []);
 
-  const onRemoveCard = useCallback((id) => {
+  const onRemoveCard = useCallback((id: number) => {
     setCards((prevCards) => prevCards.filter((card) => card.id !== id));
   }, []);
 
-  const onChangeCoords = useCallback((id, coords) => {
-    setCards((prevCards) => {
-      return prevCards.map((card) => {
-        if (card.id !== id) return card;
-        return {
-          ...card,
-          coords: {
-            ...card.coords,
-            x: coords.x,
-            y: coords.y,
-          },
-        };
+  const onChangeCoords = useCallback(
+    (id: number, coords: { x: number; y: number }) => {
+      setCards((prevCards) => {
+        return prevCards.map((card) => {
+          if (card.id !== id) return card;
+          return {
+            ...card,
+            coords: {
+              ...card.coords,
+              x: coords.x,
+              y: coords.y,
+            },
+          };
+        });
       });
-    });
-  }, []);
+    },
+    []
+  );
 
   return { cards, onAddCard, onRemoveCard, onChangeCoords };
 };

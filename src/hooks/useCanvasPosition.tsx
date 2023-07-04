@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
 import { rafThrottle } from "../utils/throttle";
 
-export const useCanvasPosition = (initialCanvasPosition) => {
+export const useCanvasPosition = (initialCanvasPosition: {
+  x: number;
+  y: number;
+  scale: number;
+}) => {
   const [canvasPosition, setCanvasPosition] = useState(initialCanvasPosition);
 
   useEffect(() => {
-    const createGetNewCanvasPositionFromPrev = (e) => {
-      function getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(
-        prevCanvasPosition
-      ) {
+    const createGetNewCanvasPositionFromPrev = (e: WheelEvent) => {
+      function getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(prevCanvasPosition: {
+        x: number;
+        y: number;
+        scale: number;
+      }) {
         const normedCoords = {
           x: (e.clientX - prevCanvasPosition.x) / prevCanvasPosition.scale,
           y: (e.clientY - prevCanvasPosition.y) / prevCanvasPosition.scale,
         };
 
         const newScale =
-          e.wheelDelta > 0
+          e.deltaY < 0
             ? prevCanvasPosition.scale * 1.1
             : prevCanvasPosition.scale / 1.1;
         const newCoords = {
@@ -28,20 +34,26 @@ export const useCanvasPosition = (initialCanvasPosition) => {
           scale: newScale,
         };
       }
-      function getNewCanvasPositionFromPrevWhenScrollAndShift(
-        prevCanvasPosition
-      ) {
+      function getNewCanvasPositionFromPrevWhenScrollAndShift(prevCanvasPosition: {
+        x: number;
+        y: number;
+        scale: number;
+      }) {
         return {
-          x: prevCanvasPosition.x + 0.5 * e.wheelDelta,
+          x: prevCanvasPosition.x - 0.5 * e.deltaY,
           y: prevCanvasPosition.y,
           scale: prevCanvasPosition.scale,
         };
       }
 
-      function getNewCanvasPositionFromPrevWhenScroll(prevCanvasPosition) {
+      function getNewCanvasPositionFromPrevWhenScroll(prevCanvasPosition: {
+        x: number;
+        y: number;
+        scale: number;
+      }) {
         return {
           x: prevCanvasPosition.x,
-          y: prevCanvasPosition.y + 0.5 * e.wheelDelta,
+          y: prevCanvasPosition.y - 0.5 * e.deltaY,
           scale: prevCanvasPosition.scale,
         };
       }
@@ -58,7 +70,7 @@ export const useCanvasPosition = (initialCanvasPosition) => {
       setCanvasPosition(getNewCanvasPositionFromPrev);
     });
 
-    const onWheel = (e) => {
+    const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       updateCanvasPosition(e);
     };

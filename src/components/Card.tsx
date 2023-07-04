@@ -2,11 +2,26 @@ import { memo, useEffect, useRef, useState } from "react";
 import { useLatest } from "../hooks/useLatext";
 
 export const Card = memo(
-  ({ id, coords, onChangeCoords, onRemoveCard, canvasPosition }) => {
-    const [tempCoords, setTempCoords] = useState(coords);
+  ({
+    id,
+    coords,
+    onChangeCoords,
+    onRemoveCard,
+    canvasPosition,
+  }: {
+    id: number;
+    coords: { x: number; y: number };
+    onChangeCoords: any;
+    onRemoveCard: any;
+    canvasPosition: { x: number; y: number; scale: number };
+  }) => {
+    const [tempCoords, setTempCoords] = useState<{
+      x: number;
+      y: number;
+    } | null>(coords);
     const [content, setContent] = useState(`card#${id}`);
 
-    const cardRef = useRef();
+    const cardRef = useRef<HTMLElement | null>(null);
 
     const latestcanvasPosition = useLatest(canvasPosition);
     const latestTempCoords = useLatest(tempCoords);
@@ -16,9 +31,9 @@ export const Card = memo(
     useEffect(() => {
       const card = cardRef.current;
 
-      const onMouseDown = (e) => {
+      const onMouseDown = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        if (!card) {
+        if (card === null) {
           return;
         }
         const rect = card.getBoundingClientRect();
@@ -26,7 +41,7 @@ export const Card = memo(
           x: e.clientX - rect.x,
           y: e.clientY - rect.y,
         };
-        const onMouseMove = (e) => {
+        const onMouseMove = (e: MouseEvent) => {
           if (e.button !== 0) return;
           setTempCoords({
             x:
@@ -39,7 +54,7 @@ export const Card = memo(
                 latestcanvasPosition.current.scale,
           });
         };
-        const onMouseUp = (e) => {
+        const onMouseUp = (e: MouseEvent) => {
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           if (latestTempCoords.current !== null) {
@@ -52,7 +67,9 @@ export const Card = memo(
         document.addEventListener("mouseup", onMouseUp, { once: true });
       };
 
-      card.addEventListener("mousedown", onMouseDown);
+      if (card !== null) {
+        card.addEventListener("mousedown", onMouseDown);
+      }
 
       return () => {
         document.removeEventListener("mousedown", onMouseDown);
@@ -61,7 +78,7 @@ export const Card = memo(
 
     return (
       <article
-        id={id}
+        id={`${id}`}
         className="card"
         style={{
           transform: `translate(${actualCoords.x}px, ${actualCoords.y}px)`,

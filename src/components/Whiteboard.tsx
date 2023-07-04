@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCanvasPosition } from "../hooks/useCanvasPosition";
-import { useWhiteboard } from "../hooks/UseWhiteboard";
+import { useWhiteboard } from "../hooks/useWhiteboard";
 import { Card } from "./Card";
 import image from "../assets/grid.svg";
 
