@@ -89,12 +89,15 @@ export const useCanvasPosition = (initialCanvasPosition: {
       if (e.button !== 0) return;
       if (!(e.target instanceof HTMLElement)) return;
       if (e.target.closest(".card")) return;
+      if (e.target instanceof HTMLButtonElement) return;
       oldPanCoords = { x: e.clientX, y: e.clientY };
       console.log("mousedown");
 
       const onMouseMove = (e: MouseEvent) => {
-        console.log("mousemove");
         if (e.button !== 0) return;
+        if (!(e.target instanceof HTMLElement)) return;
+        if (e.target.closest(".card")) return;
+        if (e.target instanceof HTMLButtonElement) return;
         const newPanCoords = { x: e.clientX, y: e.clientY };
         const oldCoords = { ...oldPanCoords };
         setCanvasPosition((prevCanvasPosition) => {
@@ -107,8 +110,10 @@ export const useCanvasPosition = (initialCanvasPosition: {
         oldPanCoords = newPanCoords;
       };
       const onMouseUp = (e: MouseEvent) => {
-        console.log("mouseup");
         if (e.button !== 0) return;
+        if (!(e.target instanceof HTMLElement)) return;
+        if (e.target.closest(".card")) return;
+        if (e.target instanceof HTMLButtonElement) return;
         document.removeEventListener("mousemove", onMouseMove);
       };
 
