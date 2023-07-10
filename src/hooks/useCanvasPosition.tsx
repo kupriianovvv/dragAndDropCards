@@ -82,6 +82,47 @@ export const useCanvasPosition = (initialCanvasPosition: {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("effect");
+    let oldPanCoords: any;
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return;
+      if (!(e.target instanceof HTMLElement)) return;
+      if (e.target.closest(".card")) return;
+      oldPanCoords = { x: e.clientX, y: e.clientY };
+      console.log("mousedown");
+
+      const onMouseMove = (e: MouseEvent) => {
+        console.log("mousemove");
+        if (e.button !== 0) return;
+        const newPanCoords = { x: e.clientX, y: e.clientY };
+        const oldCoords = { ...oldPanCoords };
+        setCanvasPosition((prevCanvasPosition) => {
+          return {
+            ...prevCanvasPosition,
+            x: prevCanvasPosition.x + newPanCoords.x - oldCoords.x,
+            y: prevCanvasPosition.y + newPanCoords.y - oldCoords.y,
+          };
+        });
+        oldPanCoords = newPanCoords;
+      };
+      const onMouseUp = (e: MouseEvent) => {
+        console.log("mouseup");
+        if (e.button !== 0) return;
+        document.removeEventListener("mousemove", onMouseMove);
+      };
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp, { once: true });
+    };
+
+    document.addEventListener("mousedown", onMouseDown);
+
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+    };
+  }, []);
+
   const moveCanvasPositionToZero = () => {
     setCanvasPosition((prevCanvasPosition) => ({
       x: 0,
