@@ -127,7 +127,7 @@ export const useCanvasPosition = (initialCanvasPosition: {
     setCanvasPosition((prevCanvasPosition) => ({
       x: 0,
       y: 0,
-      scale: prevCanvasPosition.scale,
+      scale: 1,
     }));
   };
 
