@@ -1,13 +1,25 @@
 import { useCallback, useState } from "react";
 import { getId } from "../utils/getId";
 
+export type ICoords = {
+  x: number;
+  y: number;
+};
+
+export type ICard = {
+  id: number;
+  coords: ICoords;
+};
+
+export type ICards = ICard[];
+
 export const useWhiteboard = (
-  initialCards = [
+  initialCards: ICards = [
     { id: -1, coords: { x: 100, y: 0 } },
     { id: 0, coords: { x: 200, y: 300 } },
   ]
 ) => {
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState<ICards>(initialCards);
 
   const onAddCard = useCallback(() => {
     setCards((prevCards) => [
@@ -20,24 +32,21 @@ export const useWhiteboard = (
     setCards((prevCards) => prevCards.filter((card) => card.id !== id));
   }, []);
 
-  const onChangeCoords = useCallback(
-    (id: number, coords: { x: number; y: number }) => {
-      setCards((prevCards) => {
-        return prevCards.map((card) => {
-          if (card.id !== id) return card;
-          return {
-            ...card,
-            coords: {
-              ...card.coords,
-              x: coords.x,
-              y: coords.y,
-            },
-          };
-        });
+  const onChangeCoords = useCallback((changedCard: ICard) => {
+    setCards((prevCards) => {
+      return prevCards.map((card) => {
+        if (card.id !== changedCard.id) return card;
+        return {
+          ...card,
+          coords: {
+            ...card.coords,
+            x: changedCard.coords.x,
+            y: changedCard.coords.y,
+          },
+        };
       });
-    },
-    []
-  );
+    });
+  }, []);
 
   return { cards, onAddCard, onRemoveCard, onChangeCoords };
 };

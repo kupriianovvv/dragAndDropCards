@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { rafThrottle } from "../utils/throttle";
 
-export const useCanvasPosition = (initialCanvasPosition: {
+export type ICanvasPosition = {
   x: number;
   y: number;
   scale: number;
-}) => {
-  const [canvasPosition, setCanvasPosition] = useState(initialCanvasPosition);
+};
+
+export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
+  const [canvasPosition, setCanvasPosition] = useState<ICanvasPosition>(
+    initialCanvasPosition
+  );
 
   useEffect(() => {
     const createGetNewCanvasPositionFromPrev = (e: WheelEvent) => {
-      function getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(prevCanvasPosition: {
-        x: number;
-        y: number;
-        scale: number;
-      }) {
+      function getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand(
+        prevCanvasPosition: ICanvasPosition
+      ): ICanvasPosition {
         const normedCoords = {
           x: (e.clientX - prevCanvasPosition.x) / prevCanvasPosition.scale,
           y: (e.clientY - prevCanvasPosition.y) / prevCanvasPosition.scale,
@@ -34,11 +36,9 @@ export const useCanvasPosition = (initialCanvasPosition: {
           scale: newScale,
         };
       }
-      function getNewCanvasPositionFromPrevWhenScrollAndShift(prevCanvasPosition: {
-        x: number;
-        y: number;
-        scale: number;
-      }) {
+      function getNewCanvasPositionFromPrevWhenScrollAndShift(
+        prevCanvasPosition: ICanvasPosition
+      ): ICanvasPosition {
         return {
           x: prevCanvasPosition.x - 0.5 * e.deltaY,
           y: prevCanvasPosition.y,
@@ -46,11 +46,9 @@ export const useCanvasPosition = (initialCanvasPosition: {
         };
       }
 
-      function getNewCanvasPositionFromPrevWhenScroll(prevCanvasPosition: {
-        x: number;
-        y: number;
-        scale: number;
-      }) {
+      function getNewCanvasPositionFromPrevWhenScroll(
+        prevCanvasPosition: ICanvasPosition
+      ): ICanvasPosition {
         return {
           x: prevCanvasPosition.x,
           y: prevCanvasPosition.y - 0.5 * e.deltaY,
@@ -95,9 +93,7 @@ export const useCanvasPosition = (initialCanvasPosition: {
 
       const onMouseMove = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        if (!(e.target instanceof HTMLElement)) return;
-        if (e.target.closest(".card")) return;
-        if (e.target instanceof HTMLButtonElement) return;
+
         const newPanCoords = { x: e.clientX, y: e.clientY };
         const oldCoords = { ...oldPanCoords };
         setCanvasPosition((prevCanvasPosition) => {
@@ -111,9 +107,6 @@ export const useCanvasPosition = (initialCanvasPosition: {
       };
       const onMouseUp = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        if (!(e.target instanceof HTMLElement)) return;
-        if (e.target.closest(".card")) return;
-        if (e.target instanceof HTMLButtonElement) return;
         document.removeEventListener("mousemove", onMouseMove);
       };
 
@@ -136,5 +129,5 @@ export const useCanvasPosition = (initialCanvasPosition: {
     }));
   };
 
-  return { moveCanvasPositionToZero, canvasPosition, setCanvasPosition };
+  return { moveCanvasPositionToZero, canvasPosition };
 };

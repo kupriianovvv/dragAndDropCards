@@ -1,24 +1,19 @@
 import { memo, useEffect, useRef, useState } from "react";
+import { ICanvasPosition } from "../hooks/useCanvasPosition";
 import { useLatest } from "../hooks/useLatext";
+import { ICard, ICoords } from "../hooks/useWhiteboard";
+
+type CardProps = {
+  id: number;
+  coords: ICoords;
+  onChangeCoords: (ChangedCard: ICard) => void;
+  onRemoveCard: (id: number) => void;
+  canvasPosition: ICanvasPosition;
+};
 
 export const Card = memo(
-  ({
-    id,
-    coords,
-    onChangeCoords,
-    onRemoveCard,
-    canvasPosition,
-  }: {
-    id: number;
-    coords: { x: number; y: number };
-    onChangeCoords: any;
-    onRemoveCard: any;
-    canvasPosition: { x: number; y: number; scale: number };
-  }) => {
-    const [tempCoords, setTempCoords] = useState<{
-      x: number;
-      y: number;
-    } | null>(coords);
+  ({ id, coords, onChangeCoords, onRemoveCard, canvasPosition }: CardProps) => {
+    const [tempCoords, setTempCoords] = useState<ICoords | null>(coords);
     const [content, setContent] = useState(`card#${id}`);
 
     const cardRef = useRef<HTMLElement | null>(null);
@@ -37,7 +32,7 @@ export const Card = memo(
           return;
         }
         const rect = card.getBoundingClientRect();
-        const shift = {
+        const shift: ICoords = {
           x: e.clientX - rect.x,
           y: e.clientY - rect.y,
         };
@@ -58,7 +53,7 @@ export const Card = memo(
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           if (latestTempCoords.current !== null) {
-            onChangeCoords(id, latestTempCoords.current);
+            onChangeCoords({ id, coords: latestTempCoords.current });
           }
           setTempCoords(null);
         };

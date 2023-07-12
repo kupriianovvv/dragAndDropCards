@@ -6,14 +6,13 @@ import image from "../assets/grid.svg";
 export const Whiteboard = () => {
   const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
 
-  const { canvasPosition, setCanvasPosition, moveCanvasPositionToZero } =
-    useCanvasPosition({
-      x: 0,
-      y: 0,
-      scale: 1,
-    });
+  const { canvasPosition, moveCanvasPositionToZero } = useCanvasPosition({
+    x: 0,
+    y: 0,
+    scale: 1,
+  });
 
-  const inset = `-${(100 / canvasPosition.scale - 100) / 2}%`;
+  const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
 
   return (
     <>
