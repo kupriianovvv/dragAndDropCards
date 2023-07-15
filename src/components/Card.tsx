@@ -6,6 +6,7 @@ import { ICard, ICoords } from "../hooks/useWhiteboard";
 type CardProps = {
   id: number;
   coords: ICoords;
+  // TODO type
   onChangeCoords: (ChangedCard: ICard) => void;
   onRemoveCard: (id: number) => void;
   canvasPosition: ICanvasPosition;
@@ -35,11 +36,13 @@ export const Card = memo(
     useEffect(() => {
       const card = cardRef.current;
 
+      if (!card) {
+        return;
+      }
+
       const onMouseDown = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        if (card === null) {
-          return;
-        }
+
         const rect = card.getBoundingClientRect();
         const shift: ICoords = {
           x: e.clientX - rect.x,
@@ -62,6 +65,7 @@ export const Card = memo(
           if (e.button !== 0) return;
           document.removeEventListener("mousemove", onMouseMove);
           if (latestTempCoords.current !== null) {
+            // TODO typing
             onChangeCoords({ id, coords: latestTempCoords.current });
           }
           setTempCoords(null);
@@ -71,6 +75,7 @@ export const Card = memo(
         document.addEventListener("mouseup", onMouseUp, { once: true });
       };
 
+      // TODO
       if (card !== null) {
         card.addEventListener("mousedown", onMouseDown);
       }
@@ -80,7 +85,8 @@ export const Card = memo(
       };
     }, [id]);
 
-    const onDblclick = (e: MouseEvent) => {
+    // TODO
+    const onDblclick = (e: React.MouseEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) {
         return;
       }
@@ -88,7 +94,8 @@ export const Card = memo(
       e.target.readOnly = false;
     };
 
-    const onBlur = (e: FocusEvent) => {
+    // TODO
+    const onBlur = (e: React.FocusEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) return;
       onChangeText(id, e.target.value);
     };

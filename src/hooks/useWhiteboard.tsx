@@ -12,6 +12,7 @@ export type ICard = {
   text: string;
 };
 
+// TODO
 export type ICards = ICard[];
 
 export const useWhiteboard = (

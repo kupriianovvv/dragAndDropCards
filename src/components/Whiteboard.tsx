@@ -16,6 +16,7 @@ export const Whiteboard = () => {
 
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
 
+  // TODO
   useEffect(() => {
     window.addEventListener("click", (e: MouseEvent) => {
       if (!(e.target instanceof HTMLElement)) return;
