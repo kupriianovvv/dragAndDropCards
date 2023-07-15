@@ -5,7 +5,8 @@ import image from "../assets/grid.svg";
 import { useEffect } from "react";
 
 export const Whiteboard = () => {
-  const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
+  const { cards, onAddCard, onRemoveCard, onChangeCoords, onChangeText } =
+    useWhiteboard();
 
   const { canvasPosition, moveCanvasPositionToZero } = useCanvasPosition({
     x: 0,
@@ -16,11 +17,15 @@ export const Whiteboard = () => {
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
 
   useEffect(() => {
-    window.addEventListener("click", (e) => {
+    window.addEventListener("click", (e: MouseEvent) => {
+      if (!(e.target instanceof HTMLElement)) return;
       if (e.target.closest(".card")) {
         return;
       }
-      const elem = document.querySelector("textarea:not([readonly])");
+      const elem = document.querySelector(
+        "textarea:not([readonly])"
+      ) as HTMLTextAreaElement | null;
+      if (elem === null) return;
       elem.readOnly = true;
     });
   }, []);
@@ -65,6 +70,8 @@ export const Whiteboard = () => {
                 onChangeCoords={onChangeCoords}
                 coords={card.coords}
                 canvasPosition={canvasPosition}
+                onChangeText={onChangeText}
+                text={card.text}
               />
             ))}
           </section>

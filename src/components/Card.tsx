@@ -9,12 +9,21 @@ type CardProps = {
   onChangeCoords: (ChangedCard: ICard) => void;
   onRemoveCard: (id: number) => void;
   canvasPosition: ICanvasPosition;
+  onChangeText: (id: number, newText: string) => void;
+  text: string;
 };
 
 export const Card = memo(
-  ({ id, coords, onChangeCoords, onRemoveCard, canvasPosition }: CardProps) => {
+  ({
+    id,
+    coords,
+    onChangeCoords,
+    onRemoveCard,
+    canvasPosition,
+    onChangeText,
+    text,
+  }: CardProps) => {
     const [tempCoords, setTempCoords] = useState<ICoords | null>(coords);
-    const [content, setContent] = useState(`card#${id}`);
 
     const cardRef = useRef<HTMLElement | null>(null);
 
@@ -77,7 +86,11 @@ export const Card = memo(
       }
       e.preventDefault();
       e.target.readOnly = false;
-      console.log("ondblclk", e.target, e.target.readOnly);
+    };
+
+    const onBlur = (e: FocusEvent) => {
+      if (!(e.target instanceof HTMLTextAreaElement)) return;
+      onChangeText(id, e.target.value);
     };
 
     return (
@@ -107,6 +120,8 @@ export const Card = memo(
             }}
             onDoubleClick={onDblclick}
             readOnly
+            onBlur={onBlur}
+            defaultValue={text}
           ></textarea>
         </section>
       </article>

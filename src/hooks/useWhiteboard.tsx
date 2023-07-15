@@ -9,14 +9,15 @@ export type ICoords = {
 export type ICard = {
   id: number;
   coords: ICoords;
+  text: string;
 };
 
 export type ICards = ICard[];
 
 export const useWhiteboard = (
   initialCards: ICards = [
-    { id: -1, coords: { x: 100, y: 0 } },
-    { id: 0, coords: { x: 200, y: 300 } },
+    { id: -1, coords: { x: 100, y: 0 }, text: "card -1" },
+    { id: 0, coords: { x: 200, y: 300 }, text: "card 0" },
   ]
 ) => {
   const [cards, setCards] = useState<ICards>(initialCards);
@@ -24,7 +25,7 @@ export const useWhiteboard = (
   const onAddCard = useCallback(() => {
     setCards((prevCards) => [
       ...prevCards,
-      { id: getId(), coords: { x: 500, y: 0 } },
+      { id: getId(), coords: { x: 500, y: 0 }, text: "" },
     ]);
   }, []);
 
@@ -48,5 +49,18 @@ export const useWhiteboard = (
     });
   }, []);
 
-  return { cards, onAddCard, onRemoveCard, onChangeCoords };
+  const onChangeText = useCallback((id: number, newText: string) => {
+    setCards((prevCards) => {
+      return prevCards.map((card) => {
+        if (card.id !== id) return card;
+        return {
+          ...card,
+          coords: { ...card.coords },
+          text: newText,
+        };
+      });
+    });
+  }, []);
+
+  return { cards, onAddCard, onRemoveCard, onChangeCoords, onChangeText };
 };
