@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { rafThrottle } from "../utils/throttle";
+import { ICoords } from "./useWhiteboard";
 
 export type ICanvasPosition = {
   x: number;
@@ -81,21 +82,19 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   useEffect(() => {
-    console.log("effect");
-    let oldPanCoords: any;
+    let oldPanCoords: ICoords;
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
       if (!(e.target instanceof HTMLElement)) return;
       if (e.target.closest(".card")) return;
       if (e.target instanceof HTMLButtonElement) return;
       oldPanCoords = { x: e.clientX, y: e.clientY };
-      console.log("mousedown");
 
       const onMouseMove = (e: MouseEvent) => {
         if (e.button !== 0) return;
 
-        const newPanCoords = { x: e.clientX, y: e.clientY };
-        const oldCoords = { ...oldPanCoords };
+        const newPanCoords: ICoords = { x: e.clientX, y: e.clientY };
+        const oldCoords: ICoords = { ...oldPanCoords };
         setCanvasPosition((prevCanvasPosition) => {
           return {
             ...prevCanvasPosition,

@@ -2,6 +2,7 @@ import { useCanvasPosition } from "../hooks/useCanvasPosition";
 import { useWhiteboard } from "../hooks/useWhiteboard";
 import { Card } from "./Card";
 import image from "../assets/grid.svg";
+import { useEffect } from "react";
 
 export const Whiteboard = () => {
   const { cards, onAddCard, onRemoveCard, onChangeCoords } = useWhiteboard();
@@ -13,6 +14,16 @@ export const Whiteboard = () => {
   });
 
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
+
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (e.target.closest(".card")) {
+        return;
+      }
+      const elem = document.querySelector("textarea:not([readonly])");
+      elem.readOnly = true;
+    });
+  }, []);
 
   return (
     <>

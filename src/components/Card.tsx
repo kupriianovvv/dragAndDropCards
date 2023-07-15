@@ -71,6 +71,24 @@ export const Card = memo(
       };
     }, [id]);
 
+    const onDblclick = (e: MouseEvent) => {
+      if (!(e.target instanceof HTMLTextAreaElement)) {
+        return
+      }
+      e.preventDefault();
+      e.target.readOnly = false;
+      console.log("ondblclk", e.target, e.target.readOnly);
+    };
+
+    const onBlur = (e: MouseEvent) => {
+      if (!(e.target instanceof HTMLTextAreaElement)) {
+        return
+      }
+      e.preventDefault();
+      e.target.readOnly = true;
+      console.log("onblur", e.target, e.target.readOnly);
+    };
+
     return (
       <article
         id={`${id}`}
@@ -96,9 +114,9 @@ export const Card = memo(
               margin: "10px auto",
               resize: "none",
             }}
-          >
-            {content}
-          </textarea>
+            onDoubleClick={onDblclick}
+            readOnly
+          ></textarea>
         </section>
       </article>
     );

@@ -38,3 +38,10 @@ body {
   position: fixed;
   left: 100px;
 }
+
+textarea {
+  text-align: center;
+}
+textarea:focus {
+  outline: none;
+}
