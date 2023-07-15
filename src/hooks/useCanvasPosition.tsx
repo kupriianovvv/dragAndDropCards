@@ -41,7 +41,8 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
         prevCanvasPosition: ICanvasPosition
       ): ICanvasPosition {
         return {
-          x: prevCanvasPosition.x - 0.5 * e.deltaY,
+          // TODO mac only
+          x: prevCanvasPosition.x - 0.5 * e.deltaX,
           y: prevCanvasPosition.y,
           scale: prevCanvasPosition.scale,
         };
@@ -59,7 +60,10 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
 
       if (e.ctrlKey || e.metaKey)
         return getNewCanvasPositionFromPrevWhenScrollAndCTRLOrCommand;
-      if (e.shiftKey) return getNewCanvasPositionFromPrevWhenScrollAndShift;
+      if (e.shiftKey) {
+        console.log("shift");
+        return getNewCanvasPositionFromPrevWhenScrollAndShift;
+      }
       return getNewCanvasPositionFromPrevWhenScroll;
     };
 
@@ -81,12 +85,14 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
     };
   }, []);
 
+  // TODO just attach to background
   useEffect(() => {
     let oldPanCoords: ICoords;
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
       if (!(e.target instanceof HTMLElement)) return;
       if (e.target.closest(".card")) return;
+      // TODO
       if (e.target instanceof HTMLButtonElement) return;
       oldPanCoords = { x: e.clientX, y: e.clientY };
 
@@ -94,6 +100,7 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
         if (e.button !== 0) return;
 
         const newPanCoords: ICoords = { x: e.clientX, y: e.clientY };
+        // TODO
         const oldCoords: ICoords = { ...oldPanCoords };
         setCanvasPosition((prevCanvasPosition) => {
           return {
