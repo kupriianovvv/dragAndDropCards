@@ -73,20 +73,11 @@ export const Card = memo(
 
     const onDblclick = (e: MouseEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) {
-        return
+        return;
       }
       e.preventDefault();
       e.target.readOnly = false;
       console.log("ondblclk", e.target, e.target.readOnly);
-    };
-
-    const onBlur = (e: MouseEvent) => {
-      if (!(e.target instanceof HTMLTextAreaElement)) {
-        return
-      }
-      e.preventDefault();
-      e.target.readOnly = true;
-      console.log("onblur", e.target, e.target.readOnly);
     };
 
     return (
