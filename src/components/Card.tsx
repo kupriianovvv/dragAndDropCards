@@ -46,6 +46,7 @@ export const Card = memo(
           y: e.clientY - rect.y,
         };
         const onMouseMove = (e: MouseEvent) => {
+          e.preventDefault();
           if (e.button !== 0) return;
           setTempCoords({
             x:
@@ -91,7 +92,21 @@ export const Card = memo(
     const onBlur = (e: FocusEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) return;
       onChangeText(id, e.target.value);
+      onBlur2(e)
     };
+
+    const onBlur2 = (e: FocusEvent) => {
+      e.target.readOnly = true;
+    }
+
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.detail > 1) {
+        e.preventDefault();
+        // of course, you still do not know what you prevent here...
+        // You could also check event.ctrlKey/event.shiftKey/event.altKey
+        // to not prevent something useful.
+      }
+    }
 
     return (
       <article
@@ -122,6 +137,7 @@ export const Card = memo(
             readOnly
             onBlur={onBlur}
             defaultValue={text}
+            onMouseDown={onMouseDown}
           ></textarea>
         </section>
       </article>

@@ -15,21 +15,7 @@ export const Whiteboard = () => {
   });
 
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
-
-  useEffect(() => {
-    window.addEventListener("click", (e: MouseEvent) => {
-      if (!(e.target instanceof HTMLElement)) return;
-      if (e.target.closest(".card")) {
-        return;
-      }
-      const elem = document.querySelector(
-        "textarea:not([readonly])"
-      ) as HTMLTextAreaElement | null;
-      if (elem === null) return;
-      elem.readOnly = true;
-    });
-  }, []);
-
+  
   return (
     <>
       <section style={{ position: "fixed", zIndex: 1 }}>
