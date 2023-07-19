@@ -40,8 +40,10 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
       function getNewCanvasPositionFromPrevWhenScrollAndShift(
         prevCanvasPosition: ICanvasPosition
       ): ICanvasPosition {
+        //MacOs fix
+        const delta = e.deltaY === 0 ? e.deltaX : e.deltaY;
         return {
-          x: prevCanvasPosition.x - 0.5 * e.deltaY,
+          x: prevCanvasPosition.x - 0.5 * delta,
           y: prevCanvasPosition.y,
           scale: prevCanvasPosition.scale,
         };
