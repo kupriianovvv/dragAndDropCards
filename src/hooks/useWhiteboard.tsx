@@ -12,15 +12,13 @@ export type ICard = {
   text: string;
 };
 
-export type ICards = ICard[];
-
 export const useWhiteboard = (
-  initialCards: ICards = [
+  initialCards: ICard[] = [
     { id: -1, coords: { x: 100, y: 0 }, text: "card -1" },
     { id: 0, coords: { x: 200, y: 300 }, text: "card 0" },
   ]
 ) => {
-  const [cards, setCards] = useState<ICards>(initialCards);
+  const [cards, setCards] = useState<ICard[]>(initialCards);
 
   const onAddCard = useCallback(() => {
     setCards((prevCards) => [
