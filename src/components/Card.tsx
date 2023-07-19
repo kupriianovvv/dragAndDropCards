@@ -34,12 +34,12 @@ export const Card = memo(
 
     useEffect(() => {
       const card = cardRef.current;
+      if (!card) {
+        return;
+      }
 
       const onMouseDown = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        if (card === null) {
-          return;
-        }
         const rect = card.getBoundingClientRect();
         const shift: ICoords = {
           x: e.clientX - rect.x,
@@ -71,11 +71,7 @@ export const Card = memo(
         document.addEventListener("mousemove", onMouseMove);
         document.addEventListener("mouseup", onMouseUp, { once: true });
       };
-
-      if (card !== null) {
-        card.addEventListener("mousedown", onMouseDown);
-      }
-
+      card.addEventListener("mousedown", onMouseDown);
       return () => {
         document.removeEventListener("mousedown", onMouseDown);
       };
