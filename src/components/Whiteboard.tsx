@@ -33,7 +33,7 @@ export const Whiteboard = () => {
         <div
           style={{
             transform: `scale(${canvasPosition.scale})`,
-            //backgroundPosition: `-${canvasPosition.x}px -${canvasPosition.y}px`,
+            backgroundPosition: `${canvasPosition.x / canvasPosition.scale}px ${canvasPosition.y / canvasPosition.scale}px`,
             backgroundImage: `url(${image})`,
             position: "fixed",
             inset: inset,
