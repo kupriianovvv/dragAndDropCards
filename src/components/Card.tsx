@@ -6,7 +6,7 @@ import { ICard, ICoords } from "../hooks/useWhiteboard";
 type CardProps = {
   id: number;
   coords: ICoords;
-  onChangeCoords: (ChangedCard: ICard) => void;
+  onChangeCoords: (ChangedCard: Pick<ICard, "id" | "coords">) => void;
   onRemoveCard: (id: number) => void;
   canvasPosition: ICanvasPosition;
   onChangeText: (id: number, newText: string) => void;
@@ -92,12 +92,12 @@ export const Card = memo(
     const onBlur = (e: FocusEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) return;
       onChangeText(id, e.target.value);
-      onBlur2(e)
+      onBlur2(e);
     };
 
     const onBlur2 = (e: FocusEvent) => {
       e.target.readOnly = true;
-    }
+    };
 
     const onMouseDown = (e: MouseEvent) => {
       if (e.detail > 1) {
@@ -106,7 +106,7 @@ export const Card = memo(
         // You could also check event.ctrlKey/event.shiftKey/event.altKey
         // to not prevent something useful.
       }
-    }
+    };
 
     return (
       <article

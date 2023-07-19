@@ -33,21 +33,24 @@ export const useWhiteboard = (
     setCards((prevCards) => prevCards.filter((card) => card.id !== id));
   }, []);
 
-  const onChangeCoords = useCallback((changedCard: ICard) => {
-    setCards((prevCards) => {
-      return prevCards.map((card) => {
-        if (card.id !== changedCard.id) return card;
-        return {
-          ...card,
-          coords: {
-            ...card.coords,
-            x: changedCard.coords.x,
-            y: changedCard.coords.y,
-          },
-        };
+  const onChangeCoords = useCallback(
+    (changedCard: Pick<ICard, "id" | "coords">) => {
+      setCards((prevCards) => {
+        return prevCards.map((card) => {
+          if (card.id !== changedCard.id) return card;
+          return {
+            ...card,
+            coords: {
+              ...card.coords,
+              x: changedCard.coords.x,
+              y: changedCard.coords.y,
+            },
+          };
+        });
       });
-    });
-  }, []);
+    },
+    []
+  );
 
   const onChangeText = useCallback((id: number, newText: string) => {
     setCards((prevCards) => {
