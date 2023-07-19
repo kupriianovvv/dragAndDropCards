@@ -81,7 +81,7 @@ export const Card = memo(
       };
     }, [id]);
 
-    const onDblclick = (e: MouseEvent) => {
+    const onDblclick = (e: React.MouseEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) {
         return;
       }
@@ -89,17 +89,17 @@ export const Card = memo(
       e.target.readOnly = false;
     };
 
-    const onBlur = (e: FocusEvent) => {
+    const onBlur = (e: React.FocusEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) return;
       onChangeText(id, e.target.value);
       onBlur2(e);
     };
 
-    const onBlur2 = (e: FocusEvent) => {
+    const onBlur2 = (e: React.FocusEvent) => {
       e.target.readOnly = true;
     };
 
-    const onMouseDown = (e: MouseEvent) => {
+    const onMouseDown = (e: React.MouseEvent) => {
       if (e.detail > 1) {
         e.preventDefault();
         // of course, you still do not know what you prevent here...
