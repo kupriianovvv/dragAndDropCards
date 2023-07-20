@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { ICanvasPosition } from "../hooks/useCanvasPosition";
-import { useLatest } from "../hooks/useLatext";
+import { useLatest } from "../hooks/useLatest";
 import { ICard, ICoords } from "../hooks/useWhiteboard";
 
 type CardProps = {
