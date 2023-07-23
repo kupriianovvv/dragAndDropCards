@@ -87,14 +87,8 @@ export const Card = memo(
 
     const onBlur = (e: React.FocusEvent) => {
       if (!(e.target instanceof HTMLTextAreaElement)) return;
+      e.target.readOnly = true;
       onChangeText(id, e.target.value);
-      onBlur2(e);
-    };
-
-    const onBlur2 = (e: React.FocusEvent) => {
-      if (e.target instanceof HTMLTextAreaElement) {
-        e.target.readOnly = true;
-      }
     };
 
     const onMouseDown = (e: React.MouseEvent) => {
