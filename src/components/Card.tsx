@@ -26,6 +26,7 @@ export const Card = memo(
     const [tempCoords, setTempCoords] = useState<ICoords | null>(coords);
 
     const cardRef = useRef<HTMLElement | null>(null);
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const latestcanvasPosition = useLatest(canvasPosition);
     const latestTempCoords = useLatest(tempCoords);
@@ -78,17 +79,22 @@ export const Card = memo(
     }, [id]);
 
     const onDblclick = (e: React.MouseEvent) => {
-      if (!(e.target instanceof HTMLTextAreaElement)) {
+      e.preventDefault();
+      const textarea = textareaRef.current;
+      if (!textarea) {
         return;
       }
-      e.preventDefault();
-      e.target.readOnly = false;
+      textarea.readOnly = false;
+      textarea.focus();
     };
 
     const onBlur = (e: React.FocusEvent) => {
-      if (!(e.target instanceof HTMLTextAreaElement)) return;
-      e.target.readOnly = true;
-      onChangeText(id, e.target.value);
+      const textarea = textareaRef.current;
+      if (!textarea) {
+        return;
+      }
+      textarea.readOnly = true;
+      onChangeText(id, textarea.value);
     };
 
     const onMouseDown = (e: React.MouseEvent) => {
@@ -107,6 +113,7 @@ export const Card = memo(
         style={{
           transform: `translate(${actualCoords.x}px, ${actualCoords.y}px)`,
         }}
+        onDoubleClick={onDblclick}
         ref={cardRef}
       >
         <section className="card--remove-button">
@@ -125,8 +132,8 @@ export const Card = memo(
               margin: "10px auto",
               resize: "none",
             }}
-            onDoubleClick={onDblclick}
             readOnly
+            ref={textareaRef}
             onBlur={onBlur}
             defaultValue={text}
             onMouseDown={onMouseDown}
