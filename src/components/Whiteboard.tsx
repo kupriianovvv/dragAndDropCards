@@ -14,11 +14,14 @@ export const Whiteboard = () => {
   });
 
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
-  
+
   return (
     <>
       <section style={{ position: "fixed", zIndex: 1 }}>
-        <button className="add-button" onClick={onAddCard}>
+        <button
+          className="add-button"
+          onClick={() => onAddCard(canvasPosition)}
+        >
           Add card
         </button>
         <button
@@ -32,7 +35,9 @@ export const Whiteboard = () => {
         <div
           style={{
             transform: `scale(${canvasPosition.scale})`,
-            backgroundPosition: `${canvasPosition.x / canvasPosition.scale}px ${canvasPosition.y / canvasPosition.scale}px`,
+            backgroundPosition: `${canvasPosition.x / canvasPosition.scale}px ${
+              canvasPosition.y / canvasPosition.scale
+            }px`,
             backgroundImage: `url(${image})`,
             position: "fixed",
             inset: inset,

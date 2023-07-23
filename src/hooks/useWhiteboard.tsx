@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { getId } from "../utils/getId";
+import { ICanvasPosition } from "./useCanvasPosition";
 
 export type ICoords = {
   x: number;
@@ -20,10 +21,18 @@ export const useWhiteboard = (
 ) => {
   const [cards, setCards] = useState<ICard[]>(initialCards);
 
-  const onAddCard = useCallback(() => {
+  const onAddCard = useCallback((canvasPosition: ICanvasPosition) => {
+    //TODO: replace 200 to center card
     setCards((prevCards) => [
       ...prevCards,
-      { id: getId(), coords: { x: 500, y: 0 }, text: "" },
+      {
+        id: getId(),
+        coords: {
+          x: -canvasPosition.x / canvasPosition.scale + 200,
+          y: -canvasPosition.y / canvasPosition.scale + 200,
+        },
+        text: "",
+      },
     ]);
   }, []);
 
