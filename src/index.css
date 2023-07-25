@@ -20,8 +20,8 @@ body {
 }
 
 .whiteboard {
-  height: 100vh;
-  width: 100vw;
+  height: 0;
+  width: 0;
   transform-origin: 0 0;
   position: relative;
 }
