@@ -1,3 +1,7 @@
+* {
+  cursor: grab;
+}
+
 body {
   margin: 0;
   -webkit-touch-callout: none;
@@ -28,6 +32,15 @@ body {
   border: 2px solid black;
   background-color: white;
   position: absolute;
+  cursor: move
+}
+
+.card--remove-button {
+  cursor: inherit;
+}
+
+.card--body {
+  cursor: inherit
 }
 
 .add-button {
@@ -41,6 +54,7 @@ body {
 
 textarea {
   text-align: center;
+  cursor: move;
 }
 textarea:focus {
   outline: none;
