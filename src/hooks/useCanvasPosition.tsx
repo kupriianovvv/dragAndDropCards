@@ -84,6 +84,8 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   useEffect(() => {
+    console.log("asds");
+    const background = document.getElementById("background");
     let oldPanCoords: ICoords;
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
@@ -96,29 +98,30 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
         if (e.button !== 0) return;
 
         const newPanCoords: ICoords = { x: e.clientX, y: e.clientY };
-        const oldCoords: ICoords = { ...oldPanCoords };
+        const deltaX = newPanCoords.x - oldPanCoords.x;
+        const deltaY = newPanCoords.y - oldPanCoords.y;
         setCanvasPosition((prevCanvasPosition) => {
           return {
             ...prevCanvasPosition,
-            x: prevCanvasPosition.x + newPanCoords.x - oldCoords.x,
-            y: prevCanvasPosition.y + newPanCoords.y - oldCoords.y,
+            x: prevCanvasPosition.x + deltaX,
+            y: prevCanvasPosition.y + deltaY,
           };
         });
         oldPanCoords = newPanCoords;
       };
       const onMouseUp = (e: MouseEvent) => {
         if (e.button !== 0) return;
-        document.removeEventListener("mousemove", onMouseMove);
+        background.removeEventListener("mousemove", onMouseMove);
       };
 
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp, { once: true });
+      background.addEventListener("mousemove", onMouseMove);
+      background.addEventListener("mouseup", onMouseUp, { once: true });
     };
 
-    document.addEventListener("mousedown", onMouseDown);
+    background.addEventListener("mousedown", onMouseDown);
 
     return () => {
-      document.removeEventListener("mousedown", onMouseDown);
+      background.removeEventListener("mousedown", onMouseDown);
     };
   }, []);
 

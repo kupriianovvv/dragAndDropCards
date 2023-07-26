@@ -41,8 +41,9 @@ export const Whiteboard = () => {
             backgroundImage: `url(${image})`,
             position: "fixed",
             inset: inset,
-            zIndex: -1,
+            zIndex: 0,
           }}
+          id="background"
         ></div>
 
         <main
