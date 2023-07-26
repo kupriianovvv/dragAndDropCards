@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { rafThrottle } from "../utils/throttle";
 import { ICoords } from "./useWhiteboard";
 
@@ -12,6 +12,7 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   const [canvasPosition, setCanvasPosition] = useState<ICanvasPosition>(
     initialCanvasPosition
   );
+  const oldPanCoorsRef = useRef<ICoords>({ x: 0, y: 0 });
 
   useEffect(() => {
     const createGetNewCanvasPositionFromPrev = (e: WheelEvent) => {
@@ -84,20 +85,16 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   useEffect(() => {
-    console.log("asds");
     const background = document.getElementById("background");
-    let oldPanCoords: ICoords;
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
-      if (!(e.target instanceof HTMLElement)) return;
-      if (e.target.closest(".card")) return;
-      if (e.target instanceof HTMLButtonElement) return;
-      oldPanCoords = { x: e.clientX, y: e.clientY };
+      oldPanCoorsRef.current = { x: e.clientX, y: e.clientY };
 
       const onMouseMove = (e: MouseEvent) => {
         if (e.button !== 0) return;
 
         const newPanCoords: ICoords = { x: e.clientX, y: e.clientY };
+        const oldPanCoords = oldPanCoorsRef.current;
         const deltaX = newPanCoords.x - oldPanCoords.x;
         const deltaY = newPanCoords.y - oldPanCoords.y;
         setCanvasPosition((prevCanvasPosition) => {
@@ -107,7 +104,7 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
             y: prevCanvasPosition.y + deltaY,
           };
         });
-        oldPanCoords = newPanCoords;
+        oldPanCoorsRef.current = newPanCoords;
       };
       const onMouseUp = (e: MouseEvent) => {
         if (e.button !== 0) return;
