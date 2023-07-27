@@ -42,7 +42,7 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
         prevCanvasPosition: ICanvasPosition
       ): ICanvasPosition {
         //MacOs fix
-        const delta = e.deltaY === 0 ? e.deltaX : e.deltaY;
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
         return {
           x: prevCanvasPosition.x - 0.5 * delta,
           y: prevCanvasPosition.y,
@@ -85,7 +85,7 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   useEffect(() => {
-    const background = document.getElementById("background");
+    const background = document.getElementById("background") as HTMLDivElement;
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
       oldPanCoorsRef.current = { x: e.clientX, y: e.clientY };
