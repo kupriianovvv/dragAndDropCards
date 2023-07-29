@@ -84,6 +84,7 @@ export const Card = memo(
       if (!textarea) {
         return;
       }
+      // TODO change cursor after double click!
       textarea.readOnly = false;
       textarea.focus();
     };

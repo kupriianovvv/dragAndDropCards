@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { rafThrottle } from "../utils/throttle";
 import { ICoords } from "./useWhiteboard";
 
@@ -8,11 +8,21 @@ export type ICanvasPosition = {
   scale: number;
 };
 
+// TODO
+const MIN_SCALE = 0.25;
+const MAX_SCALE = 5;
+const SCALE_STEP = 1.1;
+
 export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   const [canvasPosition, setCanvasPosition] = useState<ICanvasPosition>(
     initialCanvasPosition
   );
+  const backgroundRef = useRef<HTMLElement | null>(null);
   const oldPanCoorsRef = useRef<ICoords>({ x: 0, y: 0 });
+
+  const backgroundRefCb = useCallback((element: HTMLElement | null) => {
+    backgroundRef.current = element;
+  }, []);
 
   useEffect(() => {
     const createGetNewCanvasPositionFromPrev = (e: WheelEvent) => {
@@ -42,7 +52,8 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
         prevCanvasPosition: ICanvasPosition
       ): ICanvasPosition {
         //MacOs fix
-        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+        const delta =
+          Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
         return {
           x: prevCanvasPosition.x - 0.5 * delta,
           y: prevCanvasPosition.y,
@@ -53,9 +64,14 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
       function getNewCanvasPositionFromPrevWhenScroll(
         prevCanvasPosition: ICanvasPosition
       ): ICanvasPosition {
+        const [deltaX, deltaY] =
+          Math.abs(e.deltaX) > Math.abs(e.deltaY)
+            ? [e.deltaX, 0]
+            : [0, e.deltaY];
+
         return {
-          x: prevCanvasPosition.x,
-          y: prevCanvasPosition.y - 0.5 * e.deltaY,
+          x: prevCanvasPosition.x - 0.5 * deltaX,
+          y: prevCanvasPosition.y - 0.5 * deltaY,
           scale: prevCanvasPosition.scale,
         };
       }
@@ -85,7 +101,12 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   useEffect(() => {
-    const background = document.getElementById("background") as HTMLDivElement;
+    const background = backgroundRef.current;
+
+    if (!background) {
+      return;
+    }
+
     const onMouseDown = (e: MouseEvent) => {
       if (e.button !== 0) return;
       oldPanCoorsRef.current = { x: e.clientX, y: e.clientY };
@@ -123,12 +144,16 @@ export const useCanvasPosition = (initialCanvasPosition: ICanvasPosition) => {
   }, []);
 
   const moveCanvasPositionToZero = () => {
-    setCanvasPosition((prevCanvasPosition) => ({
+    setCanvasPosition(() => ({
       x: 0,
       y: 0,
       scale: 1,
     }));
   };
 
-  return { moveCanvasPositionToZero, canvasPosition };
+  return {
+    moveCanvasPositionToZero,
+    backgroundRef: backgroundRefCb,
+    canvasPosition,
+  };
 };
