@@ -7,11 +7,12 @@ export const Whiteboard = () => {
   const { cards, onAddCard, onRemoveCard, onChangeCoords, onChangeText } =
     useWhiteboard();
 
-  const { canvasPosition, moveCanvasPositionToZero } = useCanvasPosition({
-    x: 0,
-    y: 0,
-    scale: 1,
-  });
+  const { canvasPosition, moveCanvasPositionToZero, backgroundRef } =
+    useCanvasPosition({
+      x: 0,
+      y: 0,
+      scale: 1,
+    });
 
   const inset: `${number}%` = `${(100 - 100 / canvasPosition.scale) / 2}%`;
 
@@ -43,6 +44,7 @@ export const Whiteboard = () => {
             inset: inset,
             zIndex: 0,
           }}
+          ref={backgroundRef}
           id="background"
         ></div>
 
@@ -52,20 +54,18 @@ export const Whiteboard = () => {
             transform: `translate(${canvasPosition.x}px,${canvasPosition.y}px) scale(${canvasPosition.scale})`,
           }}
         >
-          <section>
-            {cards.map((card) => (
-              <Card
-                key={card.id}
-                id={card.id}
-                onRemoveCard={onRemoveCard}
-                onChangeCoords={onChangeCoords}
-                coords={card.coords}
-                canvasPosition={canvasPosition}
-                onChangeText={onChangeText}
-                text={card.text}
-              />
-            ))}
-          </section>
+          {cards.map((card) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              onRemoveCard={onRemoveCard}
+              onChangeCoords={onChangeCoords}
+              coords={card.coords}
+              canvasPosition={canvasPosition}
+              onChangeText={onChangeText}
+              text={card.text}
+            />
+          ))}
         </main>
       </div>
     </>
